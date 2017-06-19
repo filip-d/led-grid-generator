@@ -1,4 +1,4 @@
-[
+var presets = [
 	{
 		name: "Pimoroni Unicorn HAT HD",
 		cols: 16,
