@@ -1,5 +1,5 @@
 # led-grid-generator
-Generate grids for LED matrixes with SVG export for laser cutting
+Generate grids for LED matrices with SVG export for laser cutting
 
 [Try it out here](https://yotoplay.github.io/led-grid-generator/)
 
