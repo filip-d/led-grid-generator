@@ -45,7 +45,7 @@
         </style>
        
     </head>
-    <body>
+     <body>
         <h1>LED matrix grid generator</h1>		
 		<b>Number of LED</b> rows: <input type="text" id="rows" value="16">
 		columns: <input type="text" id="cols" value="16"><br/>
@@ -58,6 +58,10 @@
 		right: <input type="text" id="marginR" value="5">
 		top: <input type="text" id="marginT" value="10">
 		bottom: <input type="text" id="marginB" value="10"><br/>
+		<b>Mounting hole:</b> diameter: <input type="text" id="holeD" value="0"> offset left: <input type="text" id="holeL" value="3.5"> 
+		right: <input type="text" id="holeR" value="4">
+		top: <input type="text" id="holeT" value="3.5">
+		bottom: <input type="text" id="holeB" value="3.5"><br/>
 		<b>SVG export</b> units: <input type="text" id="unit" value="mm">
 		stroke width <input type="text" id="strokeW" value="0.01"><br/>
 		<br/>
@@ -69,14 +73,8 @@
 		
 		
 		 <script>
-		
-			var w1 = 50.0;
-			var w2 = 100.0;
-			var N = 8;
-			var h = 30.0;
-			
+					
 			var padding = 10;
-			var scale = 4;
 			
 			var cols = 16
 			var rows = 16
@@ -89,6 +87,11 @@
 			var marginR = 2
 			var marginT = 2
 			var marginB = 2
+			var holeL = 0
+			var holeR = 0
+			var holeT = 0
+			var holeB = 0
+			var holeD = 0
 			var boardR = 5
 			var strokeW = 0.01
 			var unit = "mm"
@@ -100,12 +103,20 @@
 				
 				$("#canvas").empty()
 				
-				var paper = Raphael("canvas", canvasWidth+"mm", canvasHeight+"mm")
+				var paper = Raphael("canvas", canvasWidth+unit, canvasHeight+unit)
 			
 				paper.clear();
 				//paper.rect(0, 0, "5mm", "5mm", "0mm").attr({fill: "#fa3",});
 				//paper.rect(0, 0, canvasWidth, canvasHeight, 0).attr({fill: "#fff", stroke: "none"});
 				paper.rect(padding+unit,padding+unit, (canvasWidth - padding*2)+unit, (canvasHeight-padding*2)+unit, boardR+unit).attr({"stroke-width": strokeW+unit})
+				
+				if (holeD > 0) {
+					paper.circle(padding+holeL+unit, padding+holeT+unit, (holeD/2)+unit).attr({"stroke-width": strokeW+unit})			//TL	
+					paper.circle((canvasWidth - holeR - padding)+unit, padding+holeT+unit, (holeD/2)+unit).attr({"stroke-width": strokeW+unit})			//TR	
+					paper.circle(padding+holeL+unit, (canvasHeight - holeB - padding)+unit, (holeD/2)+unit).attr({"stroke-width": strokeW+unit})			//BL	
+					paper.circle((canvasWidth - holeR - padding)+unit, (canvasHeight - holeB - padding)+unit, (holeD/2)+unit).attr({"stroke-width": strokeW+unit})			//BR	
+				}
+				
 				for (var r=0; r<rows; r++) {
 					for (var c=0; c<cols; c++) {
 						paper.rect((padding+marginL+(spaceW+ledW)*c)+unit,(padding+marginT+(spaceH+ledH)*r)+unit, ledW+unit, ledH+unit, ledR+unit).attr({"stroke-width": strokeW+unit})
@@ -136,6 +147,11 @@
 				marginR = Number($("#marginR").val())
 				marginT = Number($("#marginT").val())
 				marginB = Number($("#marginB").val())
+				holeD = Number($("#holeD").val())
+				holeL = Number($("#holeL").val())
+				holeR = Number($("#holeR").val())
+				holeT = Number($("#holeT").val())
+				holeB = Number($("#holeB").val())
 				unit = $("#unit").val()
 				strokeW = Number($("#strokeW").val())
 				generateGrid()
